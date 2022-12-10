@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Competency6", "Competency6\Competency6.csproj", "{50534B59-626E-4D59-8AFC-A3A37191EA97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Competency6", "Competency6\Competency6.csproj", "{50534B59-626E-4D59-8AFC-A3A37191EA97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyInvestmentApp.Data", "MyInvestmentApp.Data\MyInvestmentApp.Data.csproj", "{6DD24712-5C4D-44DC-A418-E6C1BCFC2A35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyInvestmentApp.Data", "MyInvestmentApp.Data\MyInvestmentApp.Data.csproj", "{6DD24712-5C4D-44DC-A418-E6C1BCFC2A35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

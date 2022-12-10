@@ -1,0 +1,22 @@
+﻿@page "/contactview"
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using MyInvestmentApp.Data.Models;
+@inject MyInvestmentApp.Data.Interfaces.IMyCalcApi Repo
+@inject NavigationManager navManager
+
+<h3>Contact Requests Table</h3>
+
+<AuthorizeView>
+    <Authorized>
+    <h1>Hello, @context.User.Identity.Name!</h1>
+    <p>You can only see this content if you're authenticated.</p>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Authentication Failed</h1>
+        <p>Please sign in!</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+}

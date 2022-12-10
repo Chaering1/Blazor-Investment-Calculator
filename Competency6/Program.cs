@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 
+using MyInvestmentApp.Data;
+using MyInvestmentApp.Data.Interfaces;
+using MyInvestmentApp.Data.Repos;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,8 +25,16 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddDbContextFactory<MyInvestmentAppDBContext>(opt => opt.UseSqlite($"Data Source=../MyInvestmentApp.db"));
+builder.Services.AddScoped<IMyCalcApi, MyInvestmentAppApiServerSide>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<MyInvestmentAppDBContext>();
+    dataContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

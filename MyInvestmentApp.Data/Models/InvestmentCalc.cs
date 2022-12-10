@@ -1,13 +1,15 @@
-﻿using System;
+﻿using MyInvestmentApp.Data.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MyInvestmentApp.Data.Models
 {
-    public class InvestmentCalc
+    public class InvestmentCalc : IMyCalc
     {
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Please enter a number between 0 and the maximum 64 bit integer for the principle.")]
