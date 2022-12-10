@@ -1,5 +1,69 @@
-﻿<h3>InvestmentEdit</h3>
+﻿@page "/editinvestment"
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using MyInvestmentApp.Data.Models;
+@inject MyInvestmentApp.Data.Interfaces.IMyCalcApi Repo
+@inject NavigationManager navManager
 
+<h3>Edit Asset</h3>
+<AuthorizeView>
+    <Authorized Context="authContext">
+        @if (investment == null)
+            {
+                <p>Investment does not exist.</p>
+            }
+        else
+            {
+                <p>
+                    <EditForm model="@investment" OnValidSubmit="@HandleValidSubmit">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                            <label for="nameInput">User Name</label>
+                            <input type="text" id="nameInput" class="form-control" @bind="investment.whichUser" />
+                            <label for="principle">Principle</label>
+                            <input type="int" id="priciple" class="form-control" @bind="investment.principle" />
+                            <label for="intrest">Intrest</label>
+                            <input type="int" id="intrest" class="form-control" @bind="investment.intrest" />
+                            <label for="years">Years</label>
+                            <input type="int" id="years" class="form-control" @bind="investment.years" />
+                            <label for="compoundsPerYear">Compouds Per Year</label>
+                            <input type="int" id="compoundsPerYear" class="form-control" @bind="investment.compoundsPerYear" />
+                            <button type="submit">Submit</button>
+                    </EditForm>
+                </p>
+            }
+        </Authorized>
+        <NotAuthorized>
+            <p>If you want to edit or add an investment, please log in.</p>
+        </NotAuthorized>
+</AuthorizeView>
 @code {
+    public int? Id { get; set; }
 
+    public InvestmentCalc? investment { get; set; }
+
+    public string? Message { get; set; }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        if (Id == null)
+        {
+            investment = new InvestmentCalc();
+        }
+        else
+        {
+            investment = await Repo.GetInvestmentAsync((int)Id);
+        }
+    }
+
+    private async void HandleValidSubmit()
+    {
+        investment.futureValue = investment.calc();
+        if (investment != null)
+        {
+            await Repo.SaveInvestmentAsync(investment);
+        }
+        navManager.NavigateTo("/investmentview");
+    }
 }
+

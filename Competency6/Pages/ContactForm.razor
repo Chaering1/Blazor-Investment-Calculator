@@ -1,4 +1,10 @@
-﻿<h3>ContactForm</h3>
+﻿@page "/contactform"
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using MyInvestmentApp.Data.Models;
+@inject MyInvestmentApp.Data.Interfaces.IMyCalcApi Repo
+@inject NavigationManager navManager
+
+<h3>Contact Form</h3>
 
 @code {
 

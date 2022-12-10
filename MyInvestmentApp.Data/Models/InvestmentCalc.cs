@@ -29,7 +29,7 @@ namespace MyInvestmentApp.Data.Models
         public int Id { get; set; }
         public double futureValue { get; set; }
 
-        private double calc()
+        public double calc()
         {
             futureValue = principle * ((1 + (intrest / compoundsPerYear))
             ^ (compoundsPerYear * years));

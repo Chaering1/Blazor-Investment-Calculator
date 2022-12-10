@@ -1,5 +1,91 @@
-﻿<h3>InvestmentView</h3>
+﻿@page "/investmentview"
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using MyInvestmentApp.Data.Models;
+@inject MyInvestmentApp.Data.Interfaces.IMyCalcApi Repo
+@inject NavigationManager navManager
+
+<h3>Investments View</h3>
+<AuthorizeView>
+    <Authorized>
+        @if (investments == null || investments.Count == 0)
+        {
+            <p>There are no investments in your portfolio.</p>
+            <button type="button" class="btn btn-primary" @onclick="()=>OnAddButtonClick()">Add Investment</button>
+        }
+        else
+        {
+            <h2>Inventory:</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Priciple</th>
+                        <th>Intrest</th>
+                        <th>Years</th>
+                        <th>Compounds Per Year</th>
+                        <th>Future Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var investment in investments)
+                    {
+                        <tr>
+                            <td>@investment.Id</td>
+                            <td>@investment.whichUser</td>
+                            <td>@investment.principle</td>
+                            <td>@investment.intrest</td>
+                            <td>@investment.years</td>
+                            <td>@investment.compoundsPerYear</td>
+                            <td>@investment.futureValue</td>
+                            <button type="button" class="btn btn-outline-primary" @onclick="()=>OnEditButtonClick(investment)">Edit</button>
+                            <button type="button" class="btn btn-outline-primary" @onclick="()=>OnDeleteButtonClick(investment)">Delete</button>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <p>
+                <button type="button" class="btn btn-primary" @onclick="OnAddButtonClick">Add Investment</button>
+            </p>
+
+        }
+    </Authorized>
+    <NotAuthorized>
+        <h1>Authentication Failed</h1>
+        <p>Please sign in!</p>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
+    List<InvestmentCalc>? investments { get; set; }
 
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        investments = await Repo.GetAllInvestmentsAsync();
+    }
+
+    //Naviagtes to the edit asset page
+    private void OnAddButtonClick()
+    {
+        navManager.NavigateTo("/editinvestment");
+    }
+
+    private async void OnDeleteButtonClick(InvestmentCalc investment)
+    {
+        //Remove from database
+        await Repo.DeleteInvestmentCalc(investment);
+        //Remove from list by completely deleting from list
+        investments?.Remove(investment);
+    }
+
+    //Naviagtes to the edit asset page to update the
+    //given asset
+    private async void OnEditButtonClick(InvestmentCalc investment)
+    {
+        navManager.NavigateTo($"/editinvestment/{investment.Id}");
+    }
 }
