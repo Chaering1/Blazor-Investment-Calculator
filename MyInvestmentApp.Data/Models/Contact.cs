@@ -14,6 +14,7 @@ namespace MyInvestmentApp.Data.Models
         [Required]
         public int Id { get; set; }
         [Required]
+        [StringLength(2-10, ErrorMessage = "Name is too long.")]
         public string Name { get; set; }
         [Required]
         public bool existingCustomer { get; set; } = false;

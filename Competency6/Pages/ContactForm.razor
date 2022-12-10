@@ -5,7 +5,52 @@
 @inject NavigationManager navManager
 
 <h3>Contact Form</h3>
-
+<AuthorizeView>
+    <Authorized Context="authContext">
+        <EditForm Model="@contact" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <label for="nameInput">Name</label>
+            <input type="text" id="nameInput" class="form-control" @bind="contact.Name" /><br />
+            <label for="existingCustomer">Are you an existing customer?</label><br />
+            <input type="checkbox" id="existingCustomer" value="Existing Customer" /><br />
+            <label for="emailAddress">Email Address</label>
+            <input type="email" id="emailAddress" class="form-control" @bind="contact.emailAddress" /><br />
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber" class="form-control" @bind="contact.phoneNumber" /><br />
+            <p>Please select the type of inquiry</p>
+            <input type="radio" name="typeOfInquiry" id="generalInquiry" value="General Inquiry">
+            <label for="generalInquiry">General Inquiry</label> <br />
+            <input type="radio" name="typeOfInquiry" id="existingInvestment" value="Help with existing investment">
+            <label for="">Help with existing investment</label><br>
+            <input type="radio" name="typeOfInquiry" id="purchaseOfInvestment">
+            <label for="purchaseOfInvestment">Purchase of an investment</label><br>
+            <br />
+            <label for="userInquiry">Why are you contacting us today?</label>
+            <input type="text" id="userInquiry" class="form-control" @bind="contact.userInquiry" /><br />
+            <button type="submit">Submit</button>
+        </EditForm>
+    </Authorized>
+    <NotAuthorized>
+        <p>To make a contact inquiry you must be sign in.</p>
+    </NotAuthorized>
+</AuthorizeView>
 @code {
+    public Contact contact { get; set; } = new Contact();
 
+    public bool isHiddenMessage { get; set; } = true;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+    }
+
+    private async void HandleValidSubmit()
+    {
+        if (contact != null)
+        {
+            await Repo.SaveContacttAsync(contact);
+        }
+        navManager.NavigateTo("/");
+    }
 }

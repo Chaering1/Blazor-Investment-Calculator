@@ -5,6 +5,12 @@
 @inject NavigationManager navManager
 
 <h3>Investments View</h3>
+
+<!--
+    Display a table of the users investment if they are signed on. Will only display the invsetments
+    associated with the user. If no user is signed on the a message will be displayed telling them to
+    sign on.
+-->
 <AuthorizeView>
     <Authorized>
         @if (investments == null || investments.Count == 0)
@@ -14,6 +20,7 @@
         }
         else
         {
+
             <h2>Inventory:</h2>
             <table class="table">
                 <thead>
@@ -30,8 +37,9 @@
                 <tbody>
                     @foreach (var investment in investments)
                     {
-                        <tr>
-                            <td>@investment.Id</td>
+                        if (investment.whichUser == context.User.Identity.Name) {
+                            <tr>
+                                <td>@investment.Id</td>
                             <td>@investment.whichUser</td>
                             <td>@investment.principle</td>
                             <td>@investment.intrest</td>
@@ -41,6 +49,7 @@
                             <button type="button" class="btn btn-outline-primary" @onclick="()=>OnEditButtonClick(investment)">Edit</button>
                             <button type="button" class="btn btn-outline-primary" @onclick="()=>OnDeleteButtonClick(investment)">Delete</button>
                         </tr>
+                        }
                     }
                 </tbody>
             </table>
@@ -68,7 +77,7 @@
         investments = await Repo.GetAllInvestmentsAsync();
     }
 
-    //Naviagtes to the edit asset page
+    //Naviagtes to the edit investment page to add a new investment
     private void OnAddButtonClick()
     {
         navManager.NavigateTo("/editinvestment");
@@ -82,8 +91,7 @@
         investments?.Remove(investment);
     }
 
-    //Naviagtes to the edit asset page to update the
-    //given asset
+    //Naviagtes to the edit investment page to update the given asset
     private async void OnEditButtonClick(InvestmentCalc investment)
     {
         navManager.NavigateTo($"/editinvestment/{investment.Id}");

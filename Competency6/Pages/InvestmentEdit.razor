@@ -5,6 +5,12 @@
 @inject NavigationManager navManager
 
 <h3>Edit Asset</h3>
+
+<!--
+    Form that will be display if a user is signed in allowing the to add a new investment or
+    update and existing one. If no use is logged in the a message will be display telling them to log
+    in
+-->
 <AuthorizeView>
     <Authorized Context="authContext">
         @if (investment == null)
@@ -56,6 +62,8 @@
         }
     }
 
+    //Calculates to futureValue once the submit if processed and then the user
+    //if directed back to the view page.
     private async void HandleValidSubmit()
     {
         investment.futureValue = investment.calc();
