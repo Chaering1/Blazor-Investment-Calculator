@@ -24,7 +24,6 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddDbContextFactory<MyInvestmentAppDBContext>(opt => opt.UseSqlite($"Data Source=../MyInvestmentApp.db"));
 builder.Services.AddScoped<IMyCalcApi, MyInvestmentAppApiServerSide>();
 
